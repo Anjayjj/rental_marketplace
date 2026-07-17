@@ -9,13 +9,14 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif !important; background-color: #f4f6f9 !important; }
-        .sidebar { width: 240px; min-height: 100vh; background-color: #1a252f; position: fixed; top: 0; left: 0; z-index: 1030; }
-        .sidebar .brand { padding: 20px; color: #fff; font-weight: 700; font-size: 1.2rem; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.1); display: block; }
+        .sidebar { width: 240px; min-height: 100vh; background-color: #4f46e5; position: fixed; top: 0; left: 0; z-index: 1030; }
+        .sidebar .brand { padding: 20px; color: #fff; font-weight: 700; font-size: 1.2rem; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.15); display: block; }
         .sidebar .nav-link { color: #aeb9c7; padding: 12px 20px; border-radius: 8px; margin: 4px 12px; font-weight: 500; }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active { background-color: #2c3e50; color: #fff; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background-color: #4338ca; color: #fff; }
         .admin-content { margin-left: 240px; padding: 24px; min-height: 100vh; }
         .card { border: none !important; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important; border-radius: 12px !important; }
     </style>
+    <link rel="stylesheet" href="<?= BASEURL; ?>/assets/css/style.css">
 </head>
 <body>
     <nav class="sidebar">
