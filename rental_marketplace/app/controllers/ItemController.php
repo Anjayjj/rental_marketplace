@@ -24,6 +24,9 @@ class ItemController extends Controller {
         $data['reviews'] = $reviewModel->getReviewsByItem($item_id);
         $data['rating'] = $reviewModel->getAverageRating($item_id);
 
+        // Barang terkait (sesama kategori)
+        $data['related'] = $itemModel->getRelatedItems($item['category_id'], $item_id, 4);
+
         // Cek Wishlist (Hanya jika login)
         $data['is_wishlist'] = false;
         if (isset($_SESSION['user_id'])) {

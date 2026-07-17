@@ -1,57 +1,61 @@
 <?php require_once '../app/views/templates/header_public.php'; ?>
 
-<div class="row mb-4 align-items-center">
-    <div class="col-md-6">
-        <h3 class="fw-bold text-dark mb-1">Eksplorasi Barang</h3>
-        <p class="text-muted small">Temukan peralatan yang Anda butuhkan untuk disewa hari ini.</p>
-    </div>
-    <div class="col-md-6">
-        <form action="<?= BASEURL; ?>/home/explore" method="GET" class="d-flex">
-            <input type="text" name="search" class="form-control me-2 bg-white" placeholder="Cari tenda, kamera, proyektor..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            <button type="submit" class="btn btn-primary px-4"><i class="fas fa-search"></i></button>
-        </form>
-    </div>
-</div>
+<?php if(isset($_SESSION['flash_error'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show"><?= $_SESSION['flash_error']; unset($_SESSION['flash_error']); ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+<?php endif; ?>
 
 <div class="row g-4">
-    <!-- Filter Kategori Kiri -->
     <div class="col-lg-3">
-        <div class="card shadow-sm border-0 bg-white">
-            <div class="card-body p-4">
-                <h6 class="fw-bold mb-3 text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Kategori</h6>
-                <div class="list-group list-group-flush">
-                    <a href="<?= BASEURL; ?>/home/explore" class="list-group-item list-group-item-action border-0 px-0 <?= !isset($_GET['category']) ? 'text-primary fw-bold' : 'text-muted'; ?>">Semua Kategori</a>
-                    <?php if(isset($data['categories'])): ?>
-                        <?php foreach($data['categories'] as $cat): ?>
-                            <a href="<?= BASEURL; ?>/home/explore?category=<?= $cat['id']; ?>" class="list-group-item list-group-item-action border-0 px-0 <?= (isset($_GET['category']) && $_GET['category'] == $cat['id']) ? 'text-primary fw-bold' : 'text-muted'; ?>">
-                                <?= $cat['name']; ?>
-                            </a>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
-            </div>
+        <div class="filter-box mb-3">
+            <h6 class="fw-bold mb-3"><i class="fas fa-filter me-1 text-brand"></i> Filter</h6>
+            <form method="GET" action="<?= BASEURL; ?>/home/explore">
+                <input type="hidden" name="search" value="<?= htmlspecialchars($data['search_q'] ?? ''); ?>">
+                <label class="form-label small fw-semibold">Kategori</label>
+                <select name="category" class="form-select form-select-sm mb-3" onchange="this.form.submit()">
+                    <option value="">Semua Kategori</option>
+                    <?php foreach($data['categories'] as $cat): ?>
+                        <option value="<?= $cat['id']; ?>" <?= (($data['search_cat'] ?? '') == $cat['id']) ? 'selected' : ''; ?>><?= htmlspecialchars($cat['name']); ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label class="form-label small fw-semibold">Urutkan</label>
+                <select name="sort" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="terbaru" <?= (($data['sort'] ?? 'terbaru')=='terbaru')?'selected':''; ?>>Terbaru</option>
+                    <option value="murah" <?= (($data['sort'] ?? '')=='murah')?'selected':''; ?>>Harga Termurah</option>
+                    <option value="mahal" <?= (($data['sort'] ?? '')=='mahal')?'selected':''; ?>>Harga Termahal</option>
+                    <option value="nama" <?= (($data['sort'] ?? '')=='nama')?'selected':''; ?>>Nama A-Z</option>
+                </select>
+            </form>
         </div>
+        <a href="<?= BASEURL; ?>/home/explore" class="btn btn-outline-secondary btn-sm w-100"><i class="fas fa-sync me-1"></i> Reset Filter</a>
     </div>
 
-    <!-- Grid Produk Kanan -->
     <div class="col-lg-9">
-        <?php if(empty($data['items'])): ?>
-            <div class="text-center py-5">
-                <i class="fas fa-box-open fs-1 text-muted mb-3"></i>
-                <h5 class="fw-bold text-dark">Barang tidak ditemukan</h5>
-                <p class="text-muted">Coba ubah kata kunci pencarian atau pilih kategori lain.</p>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4 class="fw-bold mb-0">Katalog Barang</h4>
+                <small class="text-muted"><?= count($data['items'] ?? []); ?> barang ditemukan<?= !empty($data['search_q']) ? ' untuk "'.htmlspecialchars($data['search_q']).'"' : ''; ?></small>
             </div>
+        </div>
+
+        <?php if(empty($data['items'])): ?>
+            <div class="empty-state bg-white rounded border"><i class="fas fa-search"></i><h6 class="fw-bold text-dark">Tidak ada barang</h6><p>Coba kata kunci atau kategori lain.</p>
+                <a href="<?= BASEURL; ?>/home/explore" class="btn btn-brand">Lihat Semua</a></div>
         <?php else: ?>
             <div class="row g-4">
                 <?php foreach($data['items'] as $item): ?>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 bg-white">
-                             <img src="<?= BASEURL; ?>/assets/uploads/items/<?= $item['cover_image'] ?? 'default.jpg'; ?>" class="card-img-top object-fit-cover p-2 rounded" style="height: 180px;" alt="<?= htmlspecialchars($item['name']); ?>">
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-light text-secondary mb-2 align-self-start border"><?= $item['category_name']; ?></span>
-                                <h6 class="card-title fw-bold text-dark text-truncate mb-1"><?= $item['name']; ?></h6>
-                                <p class="text-primary fw-bold mb-3 mt-auto">Rp <?= number_format($item['price_daily'], 0, ',', '.'); ?> <span class="text-muted fw-normal" style="font-size: 0.8rem;">/hari</span></p>
-                                <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="btn btn-outline-primary w-100 fw-semibold">Lihat Detail</a>
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="product-card h-100">
+                            <div class="thumb">
+                                <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>"><img src="<?= BASEURL; ?>/assets/uploads/items/<?= $item['cover_image'] ?? 'default.jpg'; ?>" alt="<?= htmlspecialchars($item['name']); ?>"></a>
+                                <button class="fav" data-item="<?= $item['id']; ?>" title="Wishlist"><i class="far fa-heart"></i></button>
+                            </div>
+                            <div class="body d-flex flex-column">
+                                <span class="badge bg-light text-secondary mb-2 align-self-start border" style="font-weight:600;"><?= htmlspecialchars($item['category_name']); ?></span>
+                                <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="name text-dark mb-2"><?= htmlspecialchars($item['name']); ?></a>
+                                <div class="mt-auto d-flex justify-content-between align-items-end">
+                                    <div class="price">Rp <?= number_format($item['price_daily'], 0, ',', '.'); ?> <small>/hari</small></div>
+                                    <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="btn btn-brand btn-sm"><i class="fas fa-cart-plus"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>

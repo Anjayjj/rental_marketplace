@@ -110,5 +110,20 @@ class ItemModel {
         $this->db->bind('id', $id);
         return $this->db->single();
     }
+
+    // Barang terkait (sesama kategori, kecuali barang ini)
+    public function getRelatedItems($category_id, $exclude_id, $limit = 4) {
+        $query = "SELECT i.*, c.name as category_name, 
+                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image 
+                  FROM items i 
+                  JOIN categories c ON i.category_id = c.id 
+                  WHERE i.status = 'active' AND i.category_id = :cat AND i.id != :excl 
+                  ORDER BY i.created_at DESC LIMIT :lim";
+        $this->db->query($query);
+        $this->db->bind('cat', $category_id);
+        $this->db->bind('excl', $exclude_id);
+        $this->db->bind('lim', $limit, PDO::PARAM_INT);
+        return $this->db->resultSet();
+    }
 }
 ?>

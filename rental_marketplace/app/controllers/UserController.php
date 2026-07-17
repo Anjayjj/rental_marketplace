@@ -9,6 +9,18 @@ class UserController extends Controller {
     // Halaman Utama Dashboard User
     public function dashboard() {
         $data['title'] = 'Dashboard Saya';
+        $itemModel = $this->model('ItemModel');
+        $bookingModel = $this->model('BookingModel');
+        $my_items = $itemModel->getItemsByOwner($_SESSION['user_id']);
+        $my_bookings = $bookingModel->getBookingsByUser($_SESSION['user_id']);
+        $rented = 0; $done = 0;
+        foreach ($my_bookings as $b) {
+            if (in_array($b['status'], array('pending','approved','active'))) $rented++;
+            if ($b['status'] === 'completed') $done++;
+        }
+        $data['my_items'] = $my_items;
+        $data['my_bookings'] = $my_bookings;
+        $data['stats'] = array('items' => count($my_items), 'rented' => $rented, 'done' => $done);
         $this->view('user/dashboard', $data);
     }
 
@@ -16,6 +28,27 @@ class UserController extends Controller {
     public function settings() {
         $data['title'] = 'Pengaturan Akun';
         $this->view('user/settings', $data);
+    }
+
+    // Halaman Wishlist / Barang Disimpan
+    public function wishlist() {
+        $this->requireAuth();
+        $wishlistModel = $this->model('WishlistModel');
+        $itemModel = $this->model('ItemModel');
+
+        $ids = $wishlistModel->getItemIdsByUser($_SESSION['user_id']);
+        $items = [];
+        foreach ($ids as $id) {
+            $it = $itemModel->getItemById($id);
+            if ($it) {
+                $img = $itemModel->getItemImages($id);
+                $it['cover_image'] = $img[0]['image_path'] ?? 'default.jpg';
+                $items[] = $it;
+            }
+        }
+        $data['title'] = 'Wishlist Saya';
+        $data['items'] = $items;
+        $this->view('user/wishlist', $data);
     }
    // Method untuk memproses pembaruan profil dan upload foto
    public function update_profile() {

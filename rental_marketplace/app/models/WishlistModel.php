@@ -13,6 +13,14 @@ class WishlistModel {
         return $this->db->single();
     }
 
+    // Ambil semua item_id yang di-wishlist user
+    public function getItemIdsByUser($user_id) {
+        $this->db->query("SELECT item_id FROM wishlists WHERE user_id = :user_id");
+        $this->db->bind('user_id', $user_id);
+        $rows = $this->db->resultSet();
+        return array_column($rows, 'item_id');
+    }
+
     public function toggleWishlist($user_id, $item_id) {
         $check = $this->checkWishlist($user_id, $item_id);
         

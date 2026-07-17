@@ -27,28 +27,32 @@ class HomeModel {
         return $this->db->resultSet();
     }
 
-    // Logika Pencarian Kompleks (Search & Filter)
-    public function searchItems($keyword = '', $category_id = 0) {
+    // Logika Pencarian Kompleks (Search & Filter & Sort)
+    public function searchItems($keyword = '', $category_id = 0, $sort = 'terbaru') {
         $query = "SELECT i.*, c.name as category_name, 
                   (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image 
                   FROM items i 
                   JOIN categories c ON i.category_id = c.id 
                   WHERE i.status = 'active'";
 
-        // Dinamis menambahkan parameter query
         if (!empty($keyword)) {
             $query .= " AND (i.name LIKE :keyword OR i.description LIKE :keyword)";
         }
-        
         if (!empty($category_id)) {
             $query .= " AND i.category_id = :category_id";
         }
 
-        $query .= " ORDER BY i.created_at DESC";
+        $orders = [
+            'terbaru'  => "i.created_at DESC",
+            'murah'    => "i.price_daily ASC",
+            'mahal'    => "i.price_daily DESC",
+            'nama'     => "i.name ASC"
+        ];
+        $orderBy = $orders[$sort] ?? $orders['terbaru'];
+        $query .= " ORDER BY " . $orderBy;
 
         $this->db->query($query);
 
-        // Binding secara dinamis
         if (!empty($keyword)) {
             $this->db->bind('keyword', "%$keyword%");
         }

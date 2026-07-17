@@ -1,43 +1,34 @@
 <?php require_once '../app/views/templates/header_user.php'; ?>
 
-<div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-primary border-4">
-    <h4 class="m-0 fw-bold text-dark">Kelola Barang Saya</h4>
-    <a href="<?= BASEURL; ?>/useritem/create" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Tambah Barang</a>
+<div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-success border-4">
+    <h4 class="m-0 fw-bold text-dark"><i class="fas fa-boxes me-2"></i> Barang Saya</h4>
+    <a href="<?= BASEURL; ?>/useritem/create" class="btn btn-brand btn-sm"><i class="fas fa-plus"></i> Tambah Barang</a>
 </div>
 
-<div class="card shadow-sm border-0 bg-white">
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Nama Barang</th>
-                        <th>Kategori</th>
-                        <th>Harga/Hari</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if(empty($data['items'])): ?>
-                        <tr><td colspan="5" class="text-center py-4 text-muted">Belum ada barang yang disewakan.</td></tr>
-                    <?php else: ?>
-                        <?php foreach($data['items'] as $item): ?>
-                        <tr>
-                            <td class="fw-semibold"><?= $item['name']; ?></td>
-                            <td><span class="badge bg-secondary"><?= $item['category_name']; ?></span></td>
-                            <td>Rp <?= number_format($item['price_daily'], 0, ',', '.'); ?></td>
-                            <td><span class="badge <?= $item['status'] == 'active' ? 'bg-success' : 'bg-warning text-dark'; ?>"><?= ucfirst($item['status']); ?></span></td>
-                            <td>
-                                <a href="<?= BASEURL; ?>/useritem/delete/<?= $item['id']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus barang ini?')"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+<?php if(isset($_SESSION['flash_error'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show"><?= $_SESSION['flash_error']; unset($_SESSION['flash_error']); ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+<?php endif; ?>
+
+<?php if(empty($data['items'])): ?>
+    <div class="empty-state bg-white rounded border"><i class="fas fa-box-open"></i><h6 class="fw-bold text-dark">Belum ada barang</h6><p>Pasang iklan sewa pertama kamu sekarang.</p><a href="<?= BASEURL; ?>/useritem/create" class="btn btn-brand">Tambah Barang</a></div>
+<?php else: ?>
+<div class="row g-4">
+    <?php foreach($data['items'] as $item): ?>
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="product-card h-100">
+                <div class="thumb"><img src="<?= BASEURL; ?>/assets/uploads/items/<?= $item['cover_image'] ?? 'default.jpg'; ?>" alt="<?= htmlspecialchars($item['name']); ?>"></div>
+                <div class="body d-flex flex-column">
+                    <span class="badge <?= $item['status']=='active'?'bg-success':'bg-warning text-dark'; ?> mb-2 align-self-start"><?= ucfirst($item['status']); ?></span>
+                    <div class="name text-dark mb-2"><?= htmlspecialchars($item['name']); ?></div>
+                    <div class="mt-auto d-flex justify-content-between align-items-end">
+                        <div class="price">Rp <?= number_format($item['price_daily'], 0, ',', '.'); ?> <small>/hari</small></div>
+                        <a href="<?= BASEURL; ?>/useritem/delete/<?= $item['id']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus barang ini?')"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    <?php endforeach; ?>
 </div>
+<?php endif; ?>
 
 <?php require_once '../app/views/templates/footer.php'; ?>
