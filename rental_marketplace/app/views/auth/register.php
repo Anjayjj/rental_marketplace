@@ -15,6 +15,7 @@
                 </div>
 
                 <form action="<?= BASEURL; ?>/auth/register" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? ''; ?>">
                     <div class="mb-3">
                         <label class="form-label fw-semibold small">Nama Lengkap</label>
                         <input type="text" class="form-control bg-light" name="name" required placeholder="John Doe">

@@ -19,6 +19,7 @@
                 </div>
 
                 <form action="<?= BASEURL; ?>/auth/login" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? ''; ?>">
                     <div class="mb-3">
                         <label class="form-label fw-semibold small">Email Address</label>
                         <input type="email" class="form-control bg-light" name="email" required placeholder="nama@email.com">
