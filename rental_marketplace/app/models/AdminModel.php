@@ -81,6 +81,26 @@ class AdminModel {
         return $this->db->resultSet();
     }
 
+    // Mengambil daftar pembayaran yang menunggu verifikasi (join booking + item)
+    public function getPendingPayments() {
+        $query = "SELECT p.*, b.invoice_no, b.grand_total, i.name as item_name, u.name as user_name 
+                  FROM payments p 
+                  JOIN bookings b ON p.booking_id = b.id 
+                  JOIN items i ON b.item_id = i.id 
+                  JOIN users u ON b.user_id = u.id 
+                  WHERE p.status = 'pending' 
+                  ORDER BY p.created_at DESC";
+        $this->db->query($query);
+        return $this->db->resultSet();
+    }
+
+    // Mengambil satu pembayaran berdasarkan ID
+    public function getPaymentById($id) {
+        $this->db->query("SELECT * FROM payments WHERE id = :id");
+        $this->db->bind('id', $id);
+        return $this->db->single();
+    }
+
     // Menghapus pengguna berdasarkan ID
     public function deleteUser($id) {
         // Query ini juga memastikan Admin tidak bisa menghapus sesama Admin (role = 'user')

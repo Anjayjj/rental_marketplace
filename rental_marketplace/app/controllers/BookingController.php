@@ -26,7 +26,7 @@ class BookingController extends Controller {
             $bookingModel = $this->model('BookingModel');
             if (!$bookingModel->isDateAvailable($item_id, $start_date, $end_date)) {
                 $_SESSION['flash'] = "Maaf, barang sudah disewa pada tanggal tersebut.";
-                header('Location: ' . BASEURL . '/item/detail/' . $item_id);
+                header('Location: ' . BASEURL . '/item/detail/' . $item['slug']);
                 exit;
             }
 
@@ -59,7 +59,7 @@ class BookingController extends Controller {
                 exit;
             } else {
                 $_SESSION['flash_error'] = "Terjadi kesalahan sistem.";
-                header('Location: ' . BASEURL . '/item/detail/' . $item_id);
+                header('Location: ' . BASEURL . '/item/detail/' . $item['slug']);
                 exit;
             }
         }

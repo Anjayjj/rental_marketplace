@@ -37,7 +37,7 @@ class AdminPaymentController extends Controller {
             }
 
             // Arahkan kembali ke halaman tabel daftar pembayaran Admin
-            header('Location: ' . BASEURL . '/admin/kelola_pembayaran');
+            header('Location: ' . BASEURL . '/admin/payments');
             exit;
         }
     }

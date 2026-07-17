@@ -1,6 +1,23 @@
 <?php
 class PaymentController extends Controller {
 
+    // Halaman invoice + upload bukti pembayaran
+    public function invoice($id) {
+        $this->requireAuth('user');
+
+        $bookingModel = $this->model('BookingModel');
+        $booking = $bookingModel->getBookingById($id);
+
+        if (!$booking || $booking['user_id'] != $_SESSION['user_id']) {
+            header('Location: ' . BASEURL . '/booking/saya');
+            exit;
+        }
+
+        $data['title'] = 'Pembayaran Invoice';
+        $data['booking'] = $booking;
+        $this->view('user/invoice_pembayaran', $data);
+    }
+
     public function upload() {
         $this->requireAuth('user');
 
@@ -62,7 +79,7 @@ class PaymentController extends Controller {
                 $paymentModel = $this->model('PaymentModel');
                 if ($paymentModel->storePayment($data)) {
                     $_SESSION['flash_success'] = "Bukti pembayaran berhasil diunggah. Menunggu verifikasi Admin.";
-                    header('Location: ' . BASEURL . '/user/booking_saya');
+                    header('Location: ' . BASEURL . '/payment/invoice/' . $booking_id);
                     exit;
                 }
             } else {

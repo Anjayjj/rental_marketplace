@@ -46,7 +46,7 @@
                 <?php foreach($data['items'] as $item): ?>
                     <div class="col-md-6 col-lg-4">
                         <div class="card h-100 shadow-sm border-0 bg-white">
-                            <img src="<?= BASEURL; ?>/assets/uploads/items/<?= $item['primary_image'] ?? 'default.jpg'; ?>" class="card-img-top object-fit-cover p-2 rounded" style="height: 180px;" alt="<?= $item['name']; ?>">
+                             <img src="<?= BASEURL; ?>/assets/uploads/items/<?= $item['cover_image'] ?? 'default.jpg'; ?>" class="card-img-top object-fit-cover p-2 rounded" style="height: 180px;" alt="<?= htmlspecialchars($item['name']); ?>">
                             <div class="card-body d-flex flex-column">
                                 <span class="badge bg-light text-secondary mb-2 align-self-start border"><?= $item['category_name']; ?></span>
                                 <h6 class="card-title fw-bold text-dark text-truncate mb-1"><?= $item['name']; ?></h6>

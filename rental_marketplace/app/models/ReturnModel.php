@@ -17,6 +17,18 @@ class ReturnModel {
         return $this->db->single();
     }
 
+    // Mendapatkan data booking untuk ditampilkan di form pengembalian (tanpa batasan status)
+    public function getBookingDetail($booking_id) {
+        $query = "SELECT b.*, i.name as item_name, u.name as user_name 
+                  FROM bookings b
+                  JOIN items i ON b.item_id = i.id
+                  JOIN users u ON b.user_id = u.id
+                  WHERE b.id = :id";
+        $this->db->query($query);
+        $this->db->bind('id', $booking_id);
+        return $this->db->single();
+    }
+
     // Memproses pengembalian
     public function processReturn($data) {
         try {

@@ -72,18 +72,22 @@ document.addEventListener("DOMContentLoaded", function() {
         const div = document.createElement('div');
         div.className = `d-flex mb-3 ${isMe ? 'justify-content-end' : 'justify-content-start'}`;
         
-        let avatarHTML = isMe ? '' : `<img src="<?= BASEURL; ?>/assets/uploads/avatars/${msg.sender_avatar}" class="rounded-circle me-2" style="width: 35px; height: 35px; object-fit: cover;">`;
+        const safeName = (msg.sender_name || '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        const safeMsg = (msg.message || '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        const safeAvatar = (msg.sender_avatar || 'default.png').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+        let avatarHTML = isMe ? '' : `<img src="<?= BASEURL; ?>/assets/uploads/avatars/${safeAvatar}" class="rounded-circle me-2" style="width: 35px; height: 35px; object-fit: cover;">`;
         let bubbleClass = isMe ? 'bg-primary text-white' : 'bg-white border text-dark';
         
         // Format waktu HH:MM
         const timeStr = new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-
+        
         div.innerHTML = `
             ${avatarHTML}
             <div style="max-width: 70%;">
-                ${!isMe ? `<small class="text-muted d-block ms-1 mb-1" style="font-size: 11px;">${msg.sender_name}</small>` : ''}
+                ${!isMe ? `<small class="text-muted d-block ms-1 mb-1" style="font-size: 11px;">${safeName}</small>` : ''}
                 <div class="p-3 shadow-sm ${bubbleClass}" style="border-radius: 15px; ${isMe ? 'border-bottom-right-radius: 0;' : 'border-top-left-radius: 0;'}">
-                    ${msg.message}
+                    ${safeMsg}
                 </div>
                 <small class="text-muted d-block mt-1 ${isMe ? 'text-end me-1' : 'ms-1'}" style="font-size: 10px;">${timeStr}</small>
             </div>

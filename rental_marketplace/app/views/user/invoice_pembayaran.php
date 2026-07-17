@@ -1,4 +1,11 @@
-<div class="container mt-4">
+<?php require_once '../app/views/templates/header_user.php'; ?>
+
+<div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-primary border-4">
+    <h4 class="m-0 fw-bold text-dark">Pembayaran Invoice</h4>
+    <a href="<?= BASEURL; ?>/booking/saya" class="btn btn-outline-secondary btn-sm"><i class="fas fa-arrow-left me-1"></i> Kembali</a>
+</div>
+
+<div class="container-fluid px-0">
     <div class="row">
         <!-- Rincian Invoice -->
         <div class="col-md-7">
@@ -14,7 +21,7 @@
                         </tr>
                         <tr>
                             <td class="text-muted">Barang</td>
-                            <td class="fw-bold"><?= $data['booking']['item_name']; ?></td>
+                            <td class="fw-bold"><?= htmlspecialchars($data['booking']['item_name']); ?></td>
                         </tr>
                         <tr>
                             <td class="text-muted">Durasi Sewa</td>
@@ -45,7 +52,7 @@
                     <p class="text-muted small">Silakan transfer ke <strong>BCA 123456789 a/n Rental Marketplace</strong></p>
                     
                     <form action="<?= BASEURL; ?>/payment/upload" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? ''; ?>">
                         <input type="hidden" name="booking_id" value="<?= $data['booking']['id']; ?>">
                         <input type="hidden" name="amount" value="<?= $data['booking']['grand_total']; ?>">
 
@@ -71,3 +78,5 @@
         </div>
     </div>
 </div>
+
+<?php require_once '../app/views/templates/footer.php'; ?>

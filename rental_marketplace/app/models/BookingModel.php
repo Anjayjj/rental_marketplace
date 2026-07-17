@@ -54,5 +54,16 @@ class BookingModel {
         $this->db->bind('user_id', $user_id);
         return $this->db->resultSet();
     }
+
+    // Mengambil satu booking lengkap beserta nama barang (untuk invoice)
+    public function getBookingById($id) {
+        $query = "SELECT b.*, i.name as item_name 
+                  FROM bookings b
+                  JOIN items i ON b.item_id = i.id
+                  WHERE b.id = :id";
+        $this->db->query($query);
+        $this->db->bind('id', $id);
+        return $this->db->single();
+    }
 }
 ?>

@@ -41,6 +41,16 @@ class AdminController extends Controller {
         $this->view('admin/users', $data);
     }
 
+    // Method untuk menampilkan halaman verifikasi pembayaran
+    public function payments() {
+        $adminModel = $this->model('AdminModel');
+        
+        $data['title'] = 'Verifikasi Pembayaran';
+        $data['payments'] = $adminModel->getPendingPayments();
+        
+        $this->view('admin/kelola_pembayaran', $data);
+    }
+
     // Method untuk menghapus pengguna
     public function delete_user($id) {
         $adminModel = $this->model('AdminModel');

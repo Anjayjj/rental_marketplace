@@ -1,6 +1,23 @@
 <?php
 class ReturnController extends Controller {
 
+    // Menampilkan form verifikasi pengembalian barang (untuk Admin/Pemilik)
+    public function form($id) {
+        $this->requireAuth();
+
+        $returnModel = $this->model('ReturnModel');
+        $booking = $returnModel->getBookingDetail($id);
+
+        if (!$booking) {
+            header('Location: ' . BASEURL . '/admin/bookings');
+            exit;
+        }
+
+        $data['title'] = 'Verifikasi Pengembalian';
+        $data['booking'] = $booking;
+        $this->view('dashboard/form_pengembalian', $data);
+    }
+
     public function process() {
         // Asumsi: Admin atau Pemilik Barang yang bisa memproses pengembalian
         $this->requireAuth(); // Pastikan user login (Role check spesifik bisa ditambahkan)
@@ -83,7 +100,7 @@ class ReturnController extends Controller {
                 $_SESSION['flash_error'] = "Terjadi kesalahan sistem saat memproses pengembalian.";
             }
 
-            header('Location: ' . BASEURL . '/dashboard/rentals');
+            header('Location: ' . BASEURL . '/admin/bookings');
             exit;
         }
     }

@@ -1,50 +1,5 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Rental Marketplace</title>
-    <!-- Memuat Bootstrap 5 & FontAwesome -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Memuat Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="bg-light">
+<?php require_once '../app/views/templates/header_admin.php'; ?>
 
-<!-- Navbar Admin -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="<?= BASEURL; ?>/admin/dashboard"><i class="fas fa-tools me-2"></i>Admin Panel</a>
-        
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="adminNavbar">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active fw-bold" href="<?= BASEURL; ?>/admin/dashboard">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= BASEURL; ?>/admin/bookings">Transaksi</a>
-                </li>
-                <li class="nav-item">
-    <a class="nav-link" href="<?= BASEURL; ?>/admin/users">Pengguna</a>
-</li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-danger" href="<?= BASEURL; ?>/auth/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<!-- Konten Utama Dashboard -->
-<div class="container-fluid px-4">
-    
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="m-0">Ringkasan Sistem</h4>
         <span class="text-muted small">Tanggal: <?= date('d M Y'); ?></span>
@@ -139,71 +94,71 @@
             </div>
         </div>
     </div>
-</div>
 
-<!-- Memuat Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Memuat Bootstrap JS & Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Script Chart.js -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const chartData = <?= $data['chart_data']; ?>;
-    const ctx = document.getElementById("revenueChart");
-    
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"],
-            datasets: [{
-                label: "Pendapatan (Rp)",
-                lineTension: 0.3,
-                backgroundColor: "rgba(13, 110, 253, 0.1)", // Warna Bootstrap Primary dengan opacity
-                borderColor: "rgba(13, 110, 253, 1)",
-                pointRadius: 4,
-                pointBackgroundColor: "rgba(255, 255, 255, 1)",
-                pointBorderColor: "rgba(13, 110, 253, 1)",
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(13, 110, 253, 1)",
-                pointHoverBorderColor: "rgba(255, 255, 255, 1)",
-                pointHitRadius: 10,
-                pointBorderWidth: 2,
-                data: chartData,
-                fill: true
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            layout: { padding: { left: 10, right: 25, top: 25, bottom: 0 } },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value, index, values) {
-                            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+    <!-- Script Chart.js -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const chartData = <?= $data['chart_data']; ?>;
+        const ctx = document.getElementById("revenueChart");
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"],
+                datasets: [{
+                    label: "Pendapatan (Rp)",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(26, 37, 47, 0.1)",
+                    borderColor: "rgba(26, 37, 47, 1)",
+                    pointRadius: 4,
+                    pointBackgroundColor: "rgba(255, 255, 255, 1)",
+                    pointBorderColor: "rgba(26, 37, 47, 1)",
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(26, 37, 47, 1)",
+                    pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: chartData,
+                    fill: true
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                layout: { padding: { left: 10, right: 25, top: 25, bottom: 0 } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+                            }
                         }
                     }
-                }
-            },
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyColor: "#858796",
-                    titleColor: '#6e707e',
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    padding: 15,
-                    displayColors: false,
-                    callbacks: {
-                        label: function(context) {
-                            return 'Pendapatan: Rp ' + new Intl.NumberFormat('id-ID').format(context.raw);
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyColor: "#858796",
+                        titleColor: '#6e707e',
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        padding: 15,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Pendapatan: Rp ' + new Intl.NumberFormat('id-ID').format(context.raw);
+                            }
                         }
                     }
                 }
             }
-        }
+        });
     });
-});
-</script>
-</body>
-</html>
+    </script>
+
+    <?php require_once '../app/views/templates/footer_admin.php'; ?>

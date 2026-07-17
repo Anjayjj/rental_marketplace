@@ -28,7 +28,7 @@ class HomeModel {
     }
 
     // Logika Pencarian Kompleks (Search & Filter)
-    public function searchItems($keyword = '', $category_id = '') {
+    public function searchItems($keyword = '', $category_id = 0) {
         $query = "SELECT i.*, c.name as category_name, 
                   (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image 
                   FROM items i 
@@ -53,7 +53,7 @@ class HomeModel {
             $this->db->bind('keyword', "%$keyword%");
         }
         if (!empty($category_id)) {
-            $this->db->bind('category_id', $category_id);
+            $this->db->bind('category_id', $category_id, PDO::PARAM_INT);
         }
 
         return $this->db->resultSet();
