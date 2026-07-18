@@ -32,13 +32,13 @@
     </div>
 </section>
 
-<!-- STATS -->
+<!-- STATS (data riil) -->
 <section class="mb-5">
     <div class="row g-3 text-center">
-        <div class="col-6 col-lg-3 reveal"><div class="stat-card"><div class="num" data-count="75000">0</div><div class="small text-muted">Barang tersedia</div></div></div>
-        <div class="col-6 col-lg-3 reveal"><div class="stat-card"><div class="num" data-count="32000">0</div><div class="small text-muted">Penyewa aktif</div></div></div>
-        <div class="col-6 col-lg-3 reveal"><div class="stat-card"><div class="num" data-count="120">0</div><div class="small text-muted">Kota terjangkau</div></div></div>
-        <div class="col-6 col-lg-3 reveal"><div class="stat-card"><div class="num" data-count="99">0</div><div class="small text-muted">% Transaksi aman</div></div></div>
+        <div class="col-6 col-lg-3 reveal"><div class="stat-card"><div class="num" data-count="<?= (int)($data['stats']['items'] ?? 0); ?>">0</div><div class="small text-muted">Barang tersedia</div></div></div>
+        <div class="col-6 col-lg-3 reveal"><div class="stat-card"><div class="num" data-count="<?= (int)($data['stats']['users'] ?? 0); ?>">0</div><div class="small text-muted">Penyewa terdaftar</div></div></div>
+        <div class="col-6 col-lg-3 reveal"><div class="stat-card"><div class="num" data-count="<?= (int)($data['stats']['categories'] ?? 0); ?>">0</div><div class="small text-muted">Kategori</div></div></div>
+        <div class="col-6 col-lg-3 reveal"><div class="stat-card"><div class="num" data-count="<?= (int)($data['stats']['bookings_done'] ?? 0); ?>">0</div><div class="small text-muted">Sewa selesai</div></div></div>
     </div>
 </section>
 

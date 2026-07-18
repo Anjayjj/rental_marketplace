@@ -23,6 +23,29 @@ class HomeModel {
 
     // Mengambil kategori untuk dropdown dan badge
     public function getCategories() {
+    // Statistik riil dari database (tidak dibesar-besarkan)
+    public function getStats() {
+        $stats = ['items' => 0, 'users' => 0, 'categories' => 0, 'bookings_done' => 0];
+
+        $this->db->query("SELECT COUNT(*) AS total FROM items WHERE status = 'active'");
+        $row = $this->db->single();
+        $stats['items'] = (int)($row['total'] ?? 0);
+
+        $this->db->query("SELECT COUNT(*) AS total FROM users WHERE role = 'user'");
+        $row = $this->db->single();
+        $stats['users'] = (int)($row['total'] ?? 0);
+
+        $this->db->query("SELECT COUNT(*) AS total FROM categories");
+        $row = $this->db->single();
+        $stats['categories'] = (int)($row['total'] ?? 0);
+
+        $this->db->query("SELECT COUNT(*) AS total FROM bookings WHERE status = 'completed'");
+        $row = $this->db->single();
+        $stats['bookings_done'] = (int)($row['total'] ?? 0);
+
+        return $stats;
+    }
+
         $this->db->query("SELECT * FROM categories ORDER BY name ASC");
         return $this->db->resultSet();
     }
