@@ -1,5 +1,14 @@
 -- SEED DATA: 30 users + 75 items (themed images + realistic prices) + sample bookings
 -- Import AFTER database.sql
+-- AMAN di-import berulang kali (membersihkan data seed lama dulu).
+
+SET FOREIGN_KEY_CHECKS=0;
+DELETE FROM `reviews` WHERE `booking_id` BETWEEN 1 AND 8;
+DELETE FROM `bookings` WHERE `id` BETWEEN 1 AND 8;
+DELETE FROM `item_images` WHERE `item_id` >= 4;
+DELETE FROM `items` WHERE `id` >= 4;
+DELETE FROM `users` WHERE `id` >= 4;
+SET FOREIGN_KEY_CHECKS=1;
 
 -- USERS (id 4..33) password: password123
 INSERT INTO `users` (`id`,`name`,`email`,`password`,`phone`,`address`,`role`,`avatar`,`created_at`) VALUES
