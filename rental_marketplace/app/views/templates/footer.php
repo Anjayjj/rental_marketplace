@@ -17,17 +17,6 @@
         });
     });
 
-    /* Theme toggle (persist) */
-    (function(){
-        var t = document.getElementById('themeToggle');
-        function apply(theme){ document.documentElement.setAttribute('data-theme', theme); try{ localStorage.setItem('rm-theme', theme); }catch(e){} }
-        var saved = null; try{ saved = localStorage.getItem('rm-theme'); }catch(e){}
-        if(saved) apply(saved);
-        if(t){ t.addEventListener('click', function(){
-            var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-            apply(cur === 'dark' ? 'light' : 'dark');
-        }); }
-    })();
     /* Scroll top */
     window.addEventListener('scroll', function(){
         var st = document.getElementById('scrollTop'); if(st) st.classList.toggle('show', window.scrollY > 320);

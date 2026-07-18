@@ -62,17 +62,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* Theme toggle (persist) */
-(function(){
-    var t = document.getElementById('themeToggle');
-    function apply(theme){ document.documentElement.setAttribute('data-theme', theme); try{ localStorage.setItem('rm-theme', theme); }catch(e){} }
-    var saved = null; try{ saved = localStorage.getItem('rm-theme'); }catch(e){}
-    if(saved) apply(saved);
-    if(t){ t.addEventListener('click', function(){
-        var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-        apply(cur === 'dark' ? 'light' : 'dark');
-    }); }
-})();
 /* Navbar scrolled shadow */
 window.addEventListener('scroll', function(){
     var n = document.querySelector('.site-nav'); if(n) n.classList.toggle('scrolled', window.scrollY > 8);

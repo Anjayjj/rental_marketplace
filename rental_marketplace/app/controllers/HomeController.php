@@ -6,7 +6,10 @@ class HomeController extends Controller {
 
         $data['title'] = 'RentalMarket - Sewa Peralatan Terpercaya';
         $data['categories'] = $homeModel->getCategories();
-        $data['items'] = $homeModel->getLatestItems(8);
+        $latest = $homeModel->getLatestItems(8);
+        $data['items'] = $latest;
+        $exclude = array_column($latest, 'id');
+        $data['more_items'] = $homeModel->getOtherItems($exclude, 8);
         $data['stats'] = $homeModel->getStats();
 
         $this->view('public/home', $data);

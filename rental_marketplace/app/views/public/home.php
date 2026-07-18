@@ -93,6 +93,39 @@
     </div>
 </section>
 
+<!-- BARANG LAINNYA -->
+<section class="mb-5">
+    <div class="section-head">
+        <div><div class="eyebrow">Masih banyak pilihan</div><h2>Barang Lainnya</h2></div>
+        <a href="<?= BASEURL; ?>/home/explore" class="text-brand fw-semibold small">Lihat semua <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="row g-4">
+        <?php if(empty($data['more_items'])): ?>
+            <div class="col-12 empty-state"><i class="fas fa-box-open"></i><p>Belum ada barang lainnya.</p></div>
+        <?php else: foreach($data['more_items'] as $item): ?>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="product-card h-100">
+                    <div class="thumb">
+                        <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>">
+                            <img loading="lazy" src="<?= BASEURL; ?>/assets/uploads/items/<?= $item['cover_image'] ?? 'default.jpg'; ?>" alt="<?= htmlspecialchars($item['name']); ?>">
+                        </a>
+                        <button class="fav" data-item="<?= $item['id']; ?>" title="Wishlist"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="body d-flex flex-column">
+                        <span class="badge bg-light text-secondary mb-2 align-self-start border" style="font-weight:600;"><?= htmlspecialchars($item['category_name']); ?></span>
+                        <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="name text-dark mb-2"><?= htmlspecialchars($item['name']); ?></a>
+                        <div class="rating-stars mb-2">★★★★★ <span class="small text-muted">(<?= rand(12,180); ?>)</span></div>
+                        <div class="mt-auto d-flex justify-content-between align-items-end">
+                            <div class="price">Rp <?= number_format($item['price_daily'], 0, ',', '.'); ?> <small>/hari</small></div>
+                            <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="btn btn-brand btn-sm"><i class="fas fa-cart-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; endif; ?>
+    </div>
+</section>
+
 <!-- HOW IT WORKS -->
 <section class="mb-5">
     <div class="section-head"><div><div class="eyebrow">Mudah</div><h2>Cara menyewa di RentalMarket</h2></div></div>

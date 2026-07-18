@@ -8,7 +8,14 @@ DELETE FROM `bookings` WHERE `id` BETWEEN 1 AND 8;
 DELETE FROM `item_images` WHERE `item_id` >= 4;
 DELETE FROM `items` WHERE `id` >= 4;
 DELETE FROM `users` WHERE `id` >= 4;
+DELETE FROM `categories` WHERE `id` >= 4;
 SET FOREIGN_KEY_CHECKS=1;
+
+-- CATEGORIES tambahan (id 4..6)
+INSERT INTO `categories` (`id`,`name`,`icon`,`slug`) VALUES
+(4, 'Alat Musik', 'fas fa-guitar', 'alat-musik'),
+(5, 'Perlengkapan Pesta', 'fas fa-glass-cheers', 'perlengkapan-pesta'),
+(6, 'Elektronik Rumah', 'fas fa-plug', 'elektronik-rumah');
 
 -- USERS (id 4..33) password: password123
 INSERT INTO `users` (`id`,`name`,`email`,`password`,`phone`,`address`,`role`,`avatar`,`created_at`) VALUES

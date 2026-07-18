@@ -8,21 +8,42 @@ class HomeModel {
 
     // Mengambil 8 barang terbaru untuk di halaman depan
     public function getLatestItems($limit = 8) {
-        $query = "SELECT i.*, c.name as category_name, 
-                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image 
-                  FROM items i 
-                  JOIN categories c ON i.category_id = c.id 
-                  WHERE i.status = 'active' 
-                  ORDER BY i.created_at DESC 
+        $query = "SELECT i.*, c.name as category_name,
+                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image
+                  FROM items i
+                  JOIN categories c ON i.category_id = c.id
+                  WHERE i.status = 'active'
+                  ORDER BY i.created_at DESC
                   LIMIT :limit";
-        
+
         $this->db->query($query);
-        $this->db->bind('limit', $limit, PDO::PARAM_INT);
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
+        return $this->db->resultSet();
+    }
+
+    // Mengambil barang selain yang sudah tampil di bagian "Populer" (Barang Lainnya)
+    public function getOtherItems($exclude_ids = [], $limit = 8) {
+        $query = "SELECT i.*, c.name as category_name,
+                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image
+                  FROM items i
+                  JOIN categories c ON i.category_id = c.id
+                  WHERE i.status = 'active'";
+        if (!empty($exclude_ids)) {
+            $ids = implode(',', array_map(function($x){ return (int)$x; }, $exclude_ids));
+            $query .= " AND i.id NOT IN (" . $ids . ")";
+        }
+        $query .= " ORDER BY RAND() LIMIT :limit";
+        $this->db->query($query);
+        $this->db->bind(':limit', $limit, PDO::PARAM_INT);
         return $this->db->resultSet();
     }
 
     // Mengambil kategori untuk dropdown dan badge
     public function getCategories() {
+        $this->db->query("SELECT * FROM categories ORDER BY name ASC");
+        return $this->db->resultSet();
+    }
+
     // Statistik riil dari database (tidak dibesar-besarkan)
     public function getStats() {
         $stats = ['items' => 0, 'users' => 0, 'categories' => 0, 'bookings_done' => 0];
@@ -46,16 +67,12 @@ class HomeModel {
         return $stats;
     }
 
-        $this->db->query("SELECT * FROM categories ORDER BY name ASC");
-        return $this->db->resultSet();
-    }
-
     // Logika Pencarian Kompleks (Search & Filter & Sort)
     public function searchItems($keyword = '', $category_id = 0, $sort = 'terbaru') {
-        $query = "SELECT i.*, c.name as category_name, 
-                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image 
-                  FROM items i 
-                  JOIN categories c ON i.category_id = c.id 
+        $query = "SELECT i.*, c.name as category_name,
+                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image
+                  FROM items i
+                  JOIN categories c ON i.category_id = c.id
                   WHERE i.status = 'active'";
 
         if (!empty($keyword)) {
@@ -77,10 +94,10 @@ class HomeModel {
         $this->db->query($query);
 
         if (!empty($keyword)) {
-            $this->db->bind('keyword', "%$keyword%");
+            $this->db->bind(':keyword', "%$keyword%");
         }
         if (!empty($category_id)) {
-            $this->db->bind('category_id', $category_id, PDO::PARAM_INT);
+            $this->db->bind(':category_id', $category_id, PDO::PARAM_INT);
         }
 
         return $this->db->resultSet();
