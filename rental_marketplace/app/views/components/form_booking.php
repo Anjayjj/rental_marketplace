@@ -38,7 +38,7 @@
             <i class="fas fa-cart-plus me-1"></i> <?= $is_owner ? 'Blokir Jadwal' : 'Masukkan Keranjang Sewa'; ?>
         </button>
         <?php if(!$is_owner): ?>
-        <a href="<?= BASEURL; ?>/item/detail/<?= $data['item']['slug']; ?>" class="btn btn-outline-brand btn-sm">Beli Langsung (sewa)</a>
+        <a href="<?= BASEURL; ?>/home/explore" class="btn btn-outline-brand btn-sm"><i class="fas fa-th-large me-1"></i> Lihat Katalog Lainnya</a>
         <?php endif; ?>
     </div>
 </form>

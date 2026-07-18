@@ -46,7 +46,8 @@
 
     <div id="main-content">
         <div class="top-navbar">
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <a href="<?= BASEURL; ?>" class="btn btn-sm btn-outline-brand" title="Kembali ke Beranda"><i class="fas fa-home me-1"></i> Beranda</a>
                 <h5 class="mb-0 fw-bold text-dark">Portal Member</h5>
             </div>
             <div class="d-flex align-items-center gap-2">

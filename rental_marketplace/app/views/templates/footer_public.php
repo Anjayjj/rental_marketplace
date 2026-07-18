@@ -33,7 +33,7 @@
             <div class="col-6 col-lg-2">
                 <h6>Bantuan</h6>
                 <ul class="list-unstyled small">
-                    <li class="mb-2"><a href="#">Cara Sewa</a></li>
+                    <li class="mb-2"><a href="<?= BASEURL; ?>/home/explore">Cara Sewa</a></li>
                     <li class="mb-2"><a href="#">Syarat & Ketentuan</a></li>
                     <li class="mb-2"><a href="#">Kebijakan Privasi</a></li>
                     <li class="mb-2"><a href="#">FAQ</a></li>
