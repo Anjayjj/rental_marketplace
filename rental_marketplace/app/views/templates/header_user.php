@@ -49,7 +49,9 @@
             <div class="d-flex align-items-center">
                 <h5 class="mb-0 fw-bold text-dark">Portal Member</h5>
             </div>
-            <div class="dropdown">
+            <div class="d-flex align-items-center gap-2">
+                <button class="theme-toggle" id="themeToggle" title="Ganti tema"><i class="fas fa-moon"></i><i class="fas fa-sun"></i></button>
+                <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
                     <div class="text-end me-3 d-none d-md-block">
                         <span class="d-block fw-bold text-dark" style="font-size:.9rem;"><?= $_SESSION['user_name']; ?></span>

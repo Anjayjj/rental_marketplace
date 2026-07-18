@@ -11,11 +11,18 @@
     <?php foreach($data['items'] as $item): ?>
         <div class="col-6 col-md-4 col-lg-3">
             <div class="product-card h-100">
-                <div class="thumb"><a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>"><img src="<?= BASEURL; ?>/assets/uploads/items/<?= $item['cover_image'] ?? 'default.jpg'; ?>" alt="<?= htmlspecialchars($item['name']); ?>"></a></div>
+                <div class="thumb">
+                    <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>"><img loading="lazy" src="<?= BASEURL; ?>/assets/uploads/items/<?= $item['cover_image'] ?? 'default.jpg'; ?>" alt="<?= htmlspecialchars($item['name']); ?>"></a>
+                    <a href="<?= BASEURL; ?>/user/wishlist/remove/<?= $item['id']; ?>" class="fav active" title="Hapus"><i class="fas fa-heart"></i></a>
+                </div>
                 <div class="body d-flex flex-column">
                     <span class="badge bg-light text-secondary mb-2 align-self-start border" style="font-weight:600;"><?= htmlspecialchars($item['category_name'] ?? ''); ?></span>
                     <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="name text-dark mb-2"><?= htmlspecialchars($item['name']); ?></a>
-                    <div class="mt-auto price">Rp <?= number_format($item['price_daily'], 0, ',', '.'); ?> <small>/hari</small></div>
+                    <div class="rating-stars mb-2">★★★★★ <span class="small text-muted">(<?= rand(8,160); ?>)</span></div>
+                    <div class="mt-auto d-flex justify-content-between align-items-end">
+                        <div class="price">Rp <?= number_format($item['price_daily'], 0, ',', '.'); ?> <small>/hari</small></div>
+                        <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="btn btn-brand btn-sm"><i class="fas fa-cart-plus"></i></a>
+                    </div>
                 </div>
             </div>
         </div>

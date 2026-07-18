@@ -39,6 +39,7 @@
             </form>
 
             <div class="d-flex align-items-center gap-2">
+                <button class="theme-toggle" id="themeToggle" title="Ganti tema" aria-label="Ganti tema"><i class="fas fa-moon"></i><i class="fas fa-sun"></i></button>
                 <a href="<?= BASEURL; ?>/user/wishlist" class="nav-icon" title="Wishlist"><i class="far fa-heart"></i></a>
                 <a href="<?= BASEURL; ?>/cart" class="nav-icon" title="Keranjang Sewa">
                     <i class="fas fa-shopping-cart"></i>

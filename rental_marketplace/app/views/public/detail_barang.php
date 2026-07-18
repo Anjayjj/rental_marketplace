@@ -15,7 +15,7 @@
 <div class="row g-4">
     <!-- Gallery -->
     <div class="col-lg-6">
-        <div class="gallery-main">
+        <div class="gallery-main" id="galleryMain">
             <?php if(empty($data['images'])): ?>
                 <img src="<?= BASEURL; ?>/assets/uploads/items/default.jpg" id="mainImg" alt="default">
             <?php else: ?>
@@ -24,39 +24,41 @@
         </div>
         <div class="gallery-thumbs">
             <?php if(!empty($data['images'])): foreach($data['images'] as $img): ?>
-                <img src="<?= BASEURL; ?>/assets/uploads/items/<?= $img['image_path']; ?>" class="thumb-img <?= $img===reset($data['images'])?'active':''; ?>" onclick="swapImg(this)">
+                <img src="<?= BASEURL; ?>/assets/uploads/items/<?= $img['image_path']; ?>" class="thumb-img <?= $img===reset($data['images'])?'active':''; ?>" onclick="swapImg(this)" onmouseenter="swapImg(this)">
             <?php endforeach; endif; ?>
         </div>
     </div>
 
     <!-- Info + booking -->
     <div class="col-lg-6">
-        <span class="badge badge-soft mb-2"><i class="<?= htmlspecialchars($data['item']['category_icon'] ?? 'fas fa-tag'); ?> me-1"></i><?= htmlspecialchars($data['item']['category_name']); ?></span>
-        <h1 class="fw-bold mb-2" style="font-size:1.8rem;"><?= htmlspecialchars($data['item']['name']); ?></h1>
+        <div class="buy-box">
+            <span class="badge badge-soft mb-2"><i class="<?= htmlspecialchars($data['item']['category_icon'] ?? 'fas fa-tag'); ?> me-1"></i><?= htmlspecialchars($data['item']['category_name']); ?></span>
+            <h1 class="fw-bold mb-2" style="font-size:1.9rem;"><?= htmlspecialchars($data['item']['name']); ?></h1>
 
-        <div class="d-flex align-items-center gap-2 mb-3">
-            <span class="rating-stars"><?= str_repeat('★', round((float)($data['rating']['avg_rating'] ?? 0))); ?><?= str_repeat('☆', 5 - round((float)($data['rating']['avg_rating'] ?? 0))); ?></span>
-            <small class="text-muted"><?= number_format((float)($data['rating']['avg_rating'] ?? 0), 1, ',', '.'); ?> (<?= (int)($data['rating']['total_reviews'] ?? 0); ?> ulasan)</small>
-        </div>
-
-        <div class="d-flex align-items-baseline gap-2 mb-3">
-            <span class="fs-3 fw-bold text-brand">Rp <?= number_format($data['item']['price_daily'], 0, ',', '.'); ?></span>
-            <span class="text-muted">/ hari</span>
-        </div>
-
-        <div class="card border-0 shadow-sm mb-3">
-            <div class="card-body">
-                <?php require_once '../app/views/components/form_booking.php'; ?>
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="rating-stars"><?= str_repeat('★', round((float)($data['rating']['avg_rating'] ?? 0))); ?><?= str_repeat('☆', 5 - round((float)($data['rating']['avg_rating'] ?? 0))); ?></span>
+                <small class="text-muted"><?= number_format((float)($data['rating']['avg_rating'] ?? 0), 1, ',', '.'); ?> (<?= (int)($data['rating']['total_reviews'] ?? 0); ?> ulasan)</small>
             </div>
-        </div>
 
-        <div class="seller-card d-flex align-items-center gap-3 border rounded p-3">
-            <img src="<?= BASEURL; ?>/assets/uploads/avatars/<?= $data['item']['owner_avatar'] ?? 'default.png'; ?>" alt="">
-            <div>
-                <small class="text-muted d-block" style="font-size:.72rem;letter-spacing:.5px;text-transform:uppercase;">Pemilik Terverifikasi</small>
-                <strong><?= htmlspecialchars($data['item']['owner_name']); ?></strong>
+            <div class="d-flex align-items-baseline gap-2 mb-3">
+                <span class="fs-3 fw-bold text-brand">Rp <?= number_format($data['item']['price_daily'], 0, ',', '.'); ?></span>
+                <span class="text-muted">/ hari</span>
             </div>
-            <a href="<?= BASEURL; ?>/chat/start/<?= $data['item']['id']; ?>/<?= $data['item']['owner_id']; ?>" class="btn btn-outline-brand btn-sm ms-auto"><i class="far fa-comment-dots me-1"></i> Chat Penjual</a>
+
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-body">
+                    <?php require_once '../app/views/components/form_booking.php'; ?>
+                </div>
+            </div>
+
+            <div class="seller-card d-flex align-items-center gap-3 border rounded p-3">
+                <img src="<?= BASEURL; ?>/assets/uploads/avatars/<?= $data['item']['owner_avatar'] ?? 'default.png'; ?>" alt="">
+                <div>
+                    <small class="text-muted d-block" style="font-size:.72rem;letter-spacing:.5px;text-transform:uppercase;">Pemilik Terverifikasi</small>
+                    <strong><?= htmlspecialchars($data['item']['owner_name']); ?></strong>
+                </div>
+                <a href="<?= BASEURL; ?>/chat/start/<?= $data['item']['id']; ?>/<?= $data['item']['owner_id']; ?>" class="btn btn-outline-brand btn-sm ms-auto"><i class="far fa-comment-dots me-1"></i> Chat Penjual</a>
+            </div>
         </div>
     </div>
 </div>
@@ -64,7 +66,7 @@
 <!-- Tabs: deskripsi / ulasan -->
 <div class="card border-0 shadow-sm mt-4">
     <div class="card-body">
-        <ul class="nav nav-tabs border-0" id="dtab" role="tablist">
+        <ul class="nav nav-pills border-0 mb-1" id="dtab" role="tablist">
             <li class="nav-item"><button class="nav-link active fw-semibold border-0" data-bs-toggle="tab" data-bs-target="#deskripsi">Deskripsi</button></li>
             <li class="nav-item"><button class="nav-link fw-semibold text-muted border-0" data-bs-toggle="tab" data-bs-target="#ulasan">Ulasan (<?= (int)($data['rating']['total_reviews'] ?? 0); ?>)</button></li>
         </ul>
@@ -72,7 +74,7 @@
             <div class="tab-pane fade show active text-muted" id="deskripsi" style="line-height:1.8;"><?= nl2br(htmlspecialchars($data['item']['description'])); ?></div>
             <div class="tab-pane fade" id="ulasan">
                 <?php if(empty($data['reviews'])): ?>
-                    <div class="empty-state"><i class="fas fa-comment-slash"></i><p>Belum ada ulasan.</p></div>
+                    <div class="empty-state"><div class="empty-art"><i class="fas fa-comment-slash"></i></div><p>Belum ada ulasan.</p></div>
                 <?php else: foreach($data['reviews'] as $r): ?>
                     <div class="d-flex mb-3 pb-3 border-bottom">
                         <img src="<?= BASEURL; ?>/assets/uploads/avatars/<?= $r['user_avatar'] ?? 'default.png'; ?>" class="rounded-circle me-3 border object-fit-cover" style="width:44px;height:44px;">
@@ -90,12 +92,12 @@
 <!-- Related -->
 <?php if(!empty($data['related'])): ?>
 <section class="mt-5">
-    <div class="section-head"><h3>Barang serupa</h3></div>
+    <div class="section-head"><div><div class="eyebrow">Rekomendasi</div><h2>Barang serupa</h2></div></div>
     <div class="row g-4">
         <?php foreach($data['related'] as $rel): ?>
             <div class="col-6 col-md-3">
                 <div class="product-card h-100">
-                    <div class="thumb"><a href="<?= BASEURL; ?>/item/detail/<?= $rel['slug']; ?>"><img src="<?= BASEURL; ?>/assets/uploads/items/<?= $rel['cover_image'] ?? 'default.jpg'; ?>" alt="<?= htmlspecialchars($rel['name']); ?>"></a></div>
+                    <div class="thumb"><a href="<?= BASEURL; ?>/item/detail/<?= $rel['slug']; ?>"><img loading="lazy" src="<?= BASEURL; ?>/assets/uploads/items/<?= $rel['cover_image'] ?? 'default.jpg'; ?>" alt="<?= htmlspecialchars($rel['name']); ?>"></a></div>
                     <div class="body d-flex flex-column">
                         <span class="badge bg-light text-secondary mb-2 align-self-start border" style="font-weight:600;"><?= htmlspecialchars($rel['category_name']); ?></span>
                         <a href="<?= BASEURL; ?>/item/detail/<?= $rel['slug']; ?>" class="name text-dark mb-2"><?= htmlspecialchars($rel['name']); ?></a>
@@ -112,4 +114,5 @@
 
 <script>
 function swapImg(el){ document.getElementById('mainImg').src = el.src; document.querySelectorAll('.thumb-img').forEach(i=>i.classList.remove('active')); el.classList.add('active'); }
+document.getElementById('galleryMain')?.addEventListener('click', function(){ this.classList.toggle('zoomed'); });
 </script>

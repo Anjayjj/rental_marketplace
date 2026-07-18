@@ -9,9 +9,9 @@
 </div>
 
 <div class="row g-4 mb-4">
-    <div class="col-md-4"><div class="card bg-white p-3 h-100"><div class="d-flex align-items-center gap-3"><div class="nav-icon" style="background:var(--brand-soft);color:var(--brand);"><i class="fas fa-boxes"></i></div><div><div class="text-muted small">Barang Disewakan</div><div class="h4 fw-bold mb-0"><?= (int)$data['stats']['items']; ?></div></div></div></div></div>
-    <div class="col-md-4"><div class="card bg-white p-3 h-100"><div class="d-flex align-items-center gap-3"><div class="nav-icon" style="background:#ecfdf5;color:#16a34a;"><i class="fas fa-receipt"></i></div><div><div class="text-muted small">Sedang Disewa</div><div class="h4 fw-bold mb-0"><?= (int)$data['stats']['rented']; ?></div></div></div></div></div>
-    <div class="col-md-4"><div class="card bg-white p-3 h-100"><div class="d-flex align-items-center gap-3"><div class="nav-icon" style="background:#fef3c7;color:#f59e0b;"><i class="fas fa-check-circle"></i></div><div><div class="text-muted small">Sewa Selesai</div><div class="h4 fw-bold mb-0"><?= (int)$data['stats']['done']; ?></div></div></div></div></div>
+    <div class="col-md-4"><div class="stat-card h-100"><div class="d-flex align-items-center gap-3"><div class="nav-icon" style="background:var(--brand-soft);color:var(--brand);"><i class="fas fa-boxes"></i></div><div><div class="text-muted small">Barang Disewakan</div><div class="h4 fw-bold mb-0"><?= (int)$data['stats']['items']; ?></div></div></div></div></div>
+    <div class="col-md-4"><div class="stat-card h-100"><div class="d-flex align-items-center gap-3"><div class="nav-icon" style="background:#ecfdf5;color:#16a34a;"><i class="fas fa-receipt"></i></div><div><div class="text-muted small">Sedang Disewa</div><div class="h4 fw-bold mb-0"><?= (int)$data['stats']['rented']; ?></div></div></div></div></div>
+    <div class="col-md-4"><div class="stat-card h-100"><div class="d-flex align-items-center gap-3"><div class="nav-icon" style="background:#fef3c7;color:#f59e0b;"><i class="fas fa-check-circle"></i></div><div><div class="text-muted small">Sewa Selesai</div><div class="h4 fw-bold mb-0"><?= (int)$data['stats']['done']; ?></div></div></div></div></div>
 </div>
 
 <div class="row g-4">
@@ -24,7 +24,7 @@
                 <?php else: $n=0; foreach($data['my_bookings'] as $b): if($n++>=5) break; ?>
                     <div class="d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
                         <div><div class="fw-semibold"><?= htmlspecialchars($b['item_name']); ?></div><small class="text-muted"><?= $b['invoice_no']; ?> &middot; <?= $b['start_date']; ?> s/d <?= $b['end_date']; ?></small></div>
-                        <span class="badge bg-secondary rounded-pill"><?= ucfirst($b['status']); ?></span>
+                        <span class="badge rounded-pill <?= $b['status']=='completed'?'bg-success':($b['status']=='active'?'bg-primary':($b['status']=='pending'?'bg-warning text-dark':'bg-secondary')); ?>"><?= ucfirst($b['status']); ?></span>
                     </div>
                 <?php endforeach; endif; ?>
             </div>
@@ -39,7 +39,7 @@
                 <?php else: $n=0; foreach($data['my_items'] as $it): if($n++>=5) break; ?>
                     <div class="d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
                         <div class="fw-semibold"><?= htmlspecialchars($it['name']); ?></div>
-                        <span class="badge <?= $it['status']=='active'?'bg-success':'bg-warning text-dark'; ?> rounded-pill"><?= ucfirst($it['status']); ?></span>
+                        <span class="badge rounded-pill <?= $it['status']=='active'?'bg-success':'bg-warning text-dark'; ?>"><?= ucfirst($it['status']); ?></span>
                     </div>
                 <?php endforeach; endif; ?>
             </div>

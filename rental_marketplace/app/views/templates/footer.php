@@ -10,14 +10,30 @@
     document.addEventListener("DOMContentLoaded", function() {
         const currentUrl = window.location.href;
         const menuLinks = document.querySelectorAll('.menu-link');
-        
         menuLinks.forEach(link => {
-            // Jika URL saat ini cocok dengan link di sidebar, nyalakan warnanya
             if(currentUrl.includes(link.getAttribute('href'))) {
                 link.classList.add('active');
             }
         });
     });
+
+    /* Theme toggle (persist) */
+    (function(){
+        var t = document.getElementById('themeToggle');
+        function apply(theme){ document.documentElement.setAttribute('data-theme', theme); try{ localStorage.setItem('rm-theme', theme); }catch(e){} }
+        var saved = null; try{ saved = localStorage.getItem('rm-theme'); }catch(e){}
+        if(saved) apply(saved);
+        if(t){ t.addEventListener('click', function(){
+            var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+            apply(cur === 'dark' ? 'light' : 'dark');
+        }); }
+    })();
+    /* Scroll top */
+    window.addEventListener('scroll', function(){
+        var st = document.getElementById('scrollTop'); if(st) st.classList.toggle('show', window.scrollY > 320);
+    });
+    document.getElementById('scrollTop')?.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
 </script>
+<button class="scroll-top" id="scrollTop" aria-label="Ke atas"><i class="fas fa-arrow-up"></i></button>
 </body>
 </html>
