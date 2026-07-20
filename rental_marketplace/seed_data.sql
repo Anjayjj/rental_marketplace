@@ -13,7 +13,8 @@ SET FOREIGN_KEY_CHECKS=1;
 INSERT INTO `categories` (`id`,`name`,`icon`,`slug`) VALUES
 (4, 'Alat Musik', 'fas fa-guitar', 'alat-musik'),
 (5, 'Perlengkapan Pesta', 'fas fa-glass-cheers', 'perlengkapan-pesta'),
-(6, 'Elektronik Rumah', 'fas fa-plug', 'elektronik-rumah');
+(6, 'Elektronik Rumah', 'fas fa-plug', 'elektronik-rumah'),
+(7, 'Belum Dikategorikan', 'fas fa-question-circle', 'belum-dikategorikan');
 
 -- USERS (id 4..33) password: password123
 INSERT INTO `users` (`id`,`name`,`email`,`password`,`phone`,`address`,`role`,`avatar`,`created_at`) VALUES

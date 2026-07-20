@@ -16,13 +16,14 @@
                 <div class="col-md-7">
                     <div class="mb-3"><label class="form-label fw-semibold">Nama Barang</label><input type="text" class="form-control" name="name" required placeholder="Contoh: Kamera Sony A7III + Lensa Kit"></div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Kategori</label>
-                        <select class="form-select" name="category_id" required>
-                            <option value="" disabled selected>-- Pilih Kategori --</option>
+                        <label class="form-label fw-semibold">Kategori <span class="text-muted fw-normal">(opsional)</span></label>
+                        <select class="form-select" name="category_id">
+                            <option value="7">Biarkan admin mengkategorikan</option>
                             <?php if(isset($data['categories'])): ?>
-                                <?php foreach($data['categories'] as $cat): ?><option value="<?= $cat['id']; ?>"><?= $cat['name']; ?></option><?php endforeach; ?>
+                                <?php foreach($data['categories'] as $cat): ?><?php if($cat['id']==7) continue; ?><option value="<?= $cat['id']; ?>"><?= $cat['name']; ?></option><?php endforeach; ?>
                             <?php endif; ?>
                         </select>
+                        <small class="text-muted">Jika ragu, pilih opsi pertama &mdash; admin akan menentukan kategori yang tepat.</small>
                     </div>
                     <div class="mb-3"><label class="form-label fw-semibold">Deskripsi & Spesifikasi</label><textarea class="form-control" name="description" rows="5" required placeholder="Jelaskan kondisi barang, kelengkapan..."></textarea></div>
                 </div>
