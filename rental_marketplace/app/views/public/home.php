@@ -81,7 +81,7 @@
                     <div class="body d-flex flex-column">
                         <span class="badge bg-light text-secondary mb-2 align-self-start border" style="font-weight:600;"><?= htmlspecialchars($item['category_name']); ?></span>
                         <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="name text-dark mb-2"><?= htmlspecialchars($item['name']); ?></a>
-                        <div class="rating-stars mb-2">★★★★★ <span class="small text-muted">(<?= rand(12,180); ?>)</span></div>
+                        <div class="rating-stars mb-2"><?= str_repeat('★', round((float)($item['avg_rating'] ?? 0))); ?><?= str_repeat('☆', 5 - round((float)($item['avg_rating'] ?? 0))); ?> <span class="small text-muted">(<?= (int)($item['total_reviews'] ?? 0); ?>)</span></div>
                         <div class="mt-auto d-flex justify-content-between align-items-end">
                             <div class="price">Rp <?= number_format($item['price_daily'], 0, ',', '.'); ?> <small>/hari</small></div>
                             <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="btn btn-brand btn-sm"><i class="fas fa-cart-plus"></i></a>
@@ -114,7 +114,7 @@
                     <div class="body d-flex flex-column">
                         <span class="badge bg-light text-secondary mb-2 align-self-start border" style="font-weight:600;"><?= htmlspecialchars($item['category_name']); ?></span>
                         <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="name text-dark mb-2"><?= htmlspecialchars($item['name']); ?></a>
-                        <div class="rating-stars mb-2">★★★★★ <span class="small text-muted">(<?= rand(12,180); ?>)</span></div>
+                        <div class="rating-stars mb-2"><?= str_repeat('★', round((float)($item['avg_rating'] ?? 0))); ?><?= str_repeat('☆', 5 - round((float)($item['avg_rating'] ?? 0))); ?> <span class="small text-muted">(<?= (int)($item['total_reviews'] ?? 0); ?>)</span></div>
                         <div class="mt-auto d-flex justify-content-between align-items-end">
                             <div class="price">Rp <?= number_format($item['price_daily'], 0, ',', '.'); ?> <small>/hari</small></div>
                             <a href="<?= BASEURL; ?>/item/detail/<?= $item['slug']; ?>" class="btn btn-brand btn-sm"><i class="fas fa-cart-plus"></i></a>

@@ -9,7 +9,9 @@ class HomeModel {
     // Mengambil 8 barang terbaru untuk di halaman depan
     public function getLatestItems($limit = 8) {
         $query = "SELECT i.*, c.name as category_name,
-                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image
+                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image,
+                  (SELECT ROUND(AVG(rating),1) FROM reviews WHERE item_id = i.id) as avg_rating,
+                  (SELECT COUNT(id) FROM reviews WHERE item_id = i.id) as total_reviews
                   FROM items i
                   JOIN categories c ON i.category_id = c.id
                   WHERE i.status = 'active'
@@ -24,7 +26,9 @@ class HomeModel {
     // Mengambil barang selain yang sudah tampil di bagian "Populer" (Barang Lainnya)
     public function getOtherItems($exclude_ids = [], $limit = 8) {
         $query = "SELECT i.*, c.name as category_name,
-                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image
+                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image,
+                  (SELECT ROUND(AVG(rating),1) FROM reviews WHERE item_id = i.id) as avg_rating,
+                  (SELECT COUNT(id) FROM reviews WHERE item_id = i.id) as total_reviews
                   FROM items i
                   JOIN categories c ON i.category_id = c.id
                   WHERE i.status = 'active'";
@@ -70,7 +74,9 @@ class HomeModel {
     // Logika Pencarian Kompleks (Search & Filter & Sort)
     public function searchItems($keyword = '', $category_id = 0, $sort = 'terbaru') {
         $query = "SELECT i.*, c.name as category_name,
-                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image
+                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image,
+                  (SELECT ROUND(AVG(rating),1) FROM reviews WHERE item_id = i.id) as avg_rating,
+                  (SELECT COUNT(id) FROM reviews WHERE item_id = i.id) as total_reviews
                   FROM items i
                   JOIN categories c ON i.category_id = c.id
                   WHERE i.status = 'active'";

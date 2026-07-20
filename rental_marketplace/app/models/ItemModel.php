@@ -15,7 +15,9 @@ class ItemModel {
     // Mengambil barang khusus milik user yang sedang login
     public function getItemsByOwner($owner_id) {
         $query = "SELECT i.*, c.name as category_name, 
-                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image 
+                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image,
+                  (SELECT ROUND(AVG(rating),1) FROM reviews WHERE item_id = i.id) as avg_rating,
+                  (SELECT COUNT(id) FROM reviews WHERE item_id = i.id) as total_reviews
                   FROM items i 
                   JOIN categories c ON i.category_id = c.id 
                   WHERE i.owner_id = :owner_id 
@@ -105,7 +107,13 @@ class ItemModel {
 
     // Mengambil detail barang berdasarkan ID (Digunakan untuk validasi saat proses Booking)
     public function getItemById($id) {
-        $query = "SELECT * FROM items WHERE id = :id";
+        $query = "SELECT i.*, c.name as category_name,
+                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image,
+                  (SELECT ROUND(AVG(rating),1) FROM reviews WHERE item_id = i.id) as avg_rating,
+                  (SELECT COUNT(id) FROM reviews WHERE item_id = i.id) as total_reviews
+                  FROM items i
+                  JOIN categories c ON i.category_id = c.id
+                  WHERE i.id = :id";
         $this->db->query($query);
         $this->db->bind('id', $id);
         return $this->db->single();
@@ -114,7 +122,9 @@ class ItemModel {
     // Barang terkait (sesama kategori, kecuali barang ini)
     public function getRelatedItems($category_id, $exclude_id, $limit = 4) {
         $query = "SELECT i.*, c.name as category_name, 
-                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image 
+                  (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image,
+                  (SELECT ROUND(AVG(rating),1) FROM reviews WHERE item_id = i.id) as avg_rating,
+                  (SELECT COUNT(id) FROM reviews WHERE item_id = i.id) as total_reviews
                   FROM items i 
                   JOIN categories c ON i.category_id = c.id 
                   WHERE i.status = 'active' AND i.category_id = :cat AND i.id != :excl 
