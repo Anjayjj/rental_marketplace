@@ -4,7 +4,104 @@ class AdminModel {
 
     public function __construct() {
         $this->db = new Database;
+        // --- Kategori ---
+    public function getCategories() {
+        $this->db->query("SELECT * FROM categories ORDER BY name ASC");
+        return $this->db->resultSet();
     }
+    public function addCategory($name, $icon, $slug) {
+        $this->db->query("INSERT INTO categories (name, icon, slug) VALUES (:name, :icon, :slug)");
+        $this->db->bind('name', $name);
+        $this->db->bind('icon', $icon);
+        $this->db->bind('slug', $slug);
+        return $this->db->execute();
+    }
+    public function updateCategory($id, $name, $icon, $slug) {
+        $this->db->query("UPDATE categories SET name=:name, icon=:icon, slug=:slug WHERE id=:id");
+        $this->db->bind('name', $name);
+        $this->db->bind('icon', $icon);
+        $this->db->bind('slug', $slug);
+        $this->db->bind('id', $id);
+        return $this->db->execute();
+    }
+    public function deleteCategory($id) {
+        // Cegah hapus kategori yang masih dipakai
+        $this->db->query("SELECT COUNT(*) as c FROM items WHERE category_id = :id");
+        $this->db->bind('id', $id);
+        $row = $this->db->single();
+        if ((int)($row['c'] ?? 0) > 0) {
+            return false;
+        }
+        $this->db->query("DELETE FROM categories WHERE id = :id");
+        $this->db->bind('id', $id);
+        return $this->db->execute();
+    }
+
+    // --- Barang ---
+    public function getAllItems($q = '') {
+        $sql = "SELECT i.*, c.name as category_name, u.name as owner_name,
+                (SELECT image_path FROM item_images WHERE item_id = i.id AND is_primary = 1 LIMIT 1) as cover_image
+                FROM items i
+                JOIN users u ON i.owner_id = u.id
+                JOIN categories c ON i.category_id = c.id";
+        if ($q !== '') {
+            $sql .= " WHERE i.name LIKE :q OR u.name LIKE :q";
+        }
+        $sql .= " ORDER BY i.created_at DESC";
+        $this->db->query($sql);
+        if ($q !== '') $this->db->bind('q', "%$q%");
+        return $this->db->resultSet();
+    }
+    public function updateItemStatus($id, $status) {
+        $this->db->query("UPDATE items SET status = :status WHERE id = :id");
+        $this->db->bind('status', $status);
+        $this->db->bind('id', $id);
+        return $this->db->execute();
+    }
+    public function updateItemCategory($id, $category_id) {
+        $this->db->query("UPDATE items SET category_id = :category_id WHERE id = :id");
+        $this->db->bind('category_id', $category_id);
+        $this->db->bind('id', $id);
+        return $this->db->execute();
+    }
+    public function deleteItem($id) {
+        $this->db->query("DELETE FROM items WHERE id = :id");
+        $this->db->bind('id', $id);
+        return $this->db->execute();
+    }
+
+    // --- Booking ---
+    public function updateBookingStatus($id, $status) {
+        $this->db->query("UPDATE bookings SET status = :status WHERE id = :id");
+        $this->db->bind('status', $status);
+        $this->db->bind('id', $id);
+        return $this->db->execute();
+    }
+
+    // --- Review ---
+    public function deleteReview($id) {
+        $this->db->query("DELETE FROM reviews WHERE id = :id");
+        $this->db->bind('id', $id);
+        return $this->db->execute();
+    }
+
+    // --- Admin Logs ---
+    public function logAction($admin_id, $action, $target_type = null, $target_id = null, $note = null) {
+        $this->db->query("INSERT INTO admin_logs (admin_id, action, target_type, target_id, note) VALUES (:admin_id, :action, :target_type, :target_id, :note)");
+        $this->db->bind('admin_id', $admin_id);
+        $this->db->bind('action', $action);
+        $this->db->bind('target_type', $target_type);
+        $this->db->bind('target_id', $target_id);
+        $this->db->bind('note', $note);
+        return $this->db->execute();
+    }
+    public function getLogs($limit = 100) {
+        $this->db->query("SELECT l.*, u.name as admin_name FROM admin_logs l JOIN users u ON l.admin_id = u.id ORDER BY l.created_at DESC LIMIT :limit");
+        $this->db->bind('limit', $limit, PDO::PARAM_INT);
+        return $this->db->resultSet();
+    }
+
+}
 
     // Statistik Widget Cards
     public function getDashboardStats() {

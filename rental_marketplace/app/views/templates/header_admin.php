@@ -26,6 +26,9 @@
             <li><a class="nav-link <?= in_array($data['title'] ?? '', ['Manajemen Transaksi','Verifikasi Pembayaran']) ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/bookings"><i class="fas fa-receipt fa-fw me-2"></i> Transaksi</a></li>
             <li><a class="nav-link <?= ($data['title'] ?? '') == 'Verifikasi Pembayaran' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/payments"><i class="fas fa-credit-card fa-fw me-2"></i> Pembayaran</a></li>
             <li><a class="nav-link <?= ($data['title'] ?? '') == 'Manajemen Pengguna' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/users"><i class="fas fa-users fa-fw me-2"></i> Pengguna</a></li>
+            <li><a class="nav-link <?= ($data['title'] ?? '') == 'Manajemen Barang' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/items"><i class="fas fa-boxes fa-fw me-2"></i> Barang</a></li>
+            <li><a class="nav-link <?= ($data['title'] ?? '') == 'Manajemen Kategori' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/categories"><i class="fas fa-tags fa-fw me-2"></i> Kategori</a></li>
+            <li><a class="nav-link <?= ($data['title'] ?? '') == 'Log Aktivitas Admin' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/logs"><i class="fas fa-clipboard-list fa-fw me-2"></i> Log</a></li>
         </ul>
         <div class="mt-auto p-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
             <a class="nav-link text-danger" href="<?= BASEURL; ?>/auth/logout"><i class="fas fa-sign-out-alt fa-fw me-2"></i> Logout</a>

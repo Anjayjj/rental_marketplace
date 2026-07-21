@@ -202,7 +202,8 @@ CREATE TABLE `users` (
   `address` text DEFAULT NULL,
   `role` enum('admin','user') DEFAULT 'user',
   `avatar` varchar(255) DEFAULT 'default.png',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_super_admin` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -210,7 +211,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `phone`, `address`, `role`, `avatar`, `created_at`) VALUES
-(1, 'Super Admin', 'admin@rental.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '08111111111', NULL, 'admin', 'default.png', '2026-07-15 07:53:26'),
+(1, 'Super Admin', 'admin@rental.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '08111111111', NULL, 'admin', 'default.png', '2026-07-15 07:53:26', 1),
 (2, 'Budi Pemilik', 'budi@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '08222222222', NULL, 'user', 'default.png', '2026-07-15 07:53:26'),
 (3, 'Siti Penyewa', 'siti@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '08333333333', NULL, 'user', 'default.png', '2026-07-15 07:53:26');
 
@@ -448,6 +449,41 @@ ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `admin_logs`
+--
+
+CREATE TABLE `admin_logs` (
+  `id` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
+  `action` varchar(100) NOT NULL,
+  `target_type` varchar(50) DEFAULT NULL,
+  `target_id` int(11) DEFAULT NULL,
+  `note` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indeks untuk tabel `admin_logs`
+--
+ALTER TABLE `admin_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `admin_id` (`admin_id`);
+
+--
+-- AUTO_INCREMENT untuk tabel `admin_logs`
+--
+ALTER TABLE `admin_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Ketidakleluasaan untuk tabel `admin_logs`
+--
+ALTER TABLE `admin_logs`
+  ADD CONSTRAINT `admin_logs_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
 -- Ketidakleluasaan untuk tabel `wishlists`
 --
 ALTER TABLE `wishlists`
