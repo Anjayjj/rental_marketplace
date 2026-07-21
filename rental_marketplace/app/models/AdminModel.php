@@ -207,5 +207,11 @@ class AdminModel {
         
         return $this->db->execute();
     }
+    public function toggleSuperAdmin($id, $flag) {
+        $this->db->query("UPDATE users SET is_super_admin = :flag WHERE id = :id");
+        $this->db->bind('flag', $flag ? 1 : 0);
+        $this->db->bind('id', $id);
+        return $this->db->execute();
+    }
 }
 ?>

@@ -146,6 +146,9 @@ class AdminController extends Controller {
         $data['stats'] = $adminModel->getDashboardStats();
         $data['recent_bookings'] = $adminModel->getRecentBookings();
         $data['chart_data'] = json_encode($adminModel->getRevenueChartData());
+        $data['uncategorized'] = $adminModel->getAllItems(''); // akan difilter di model/view? simpler: ambil semua lalu filter category_id=7
+        $data['uncategorized'] = array_filter($data['uncategorized'] ?? [], function($it){ return (int)($it['category_id'] ?? 0) === 7; });
+        $data['all_categories'] = $adminModel->getCategories();
         
         $this->view('admin/dashboard', $data);
     }
@@ -189,6 +192,18 @@ class AdminController extends Controller {
             $_SESSION['flash_error'] = "Terjadi kesalahan saat menghapus pengguna.";
         }
         
+        header('Location: ' . BASEURL . '/admin/users');
+        exit;
+    }
+    public function toggle_super_admin($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) die("CSRF Token Invalid.");
+            $flag = !empty($_POST['flag']);
+            $adminModel = $this->model('AdminModel');
+            $adminModel->toggleSuperAdmin($id, $flag);
+            $adminModel->logAction($_SESSION['user_id'], 'toggle_super_admin', 'user', $id, $flag ? 'grant' : 'revoke');
+            $_SESSION['flash_success'] = "Hak akses super admin diperbarui.";
+        }
         header('Location: ' . BASEURL . '/admin/users');
         exit;
     }
