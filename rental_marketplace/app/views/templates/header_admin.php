@@ -20,11 +20,10 @@
 </head>
 <body>
     <nav class="sidebar">
-        <a href="<?= BASEURL; ?>/admin/dashboard" class="brand"><i class="fas fa-tools me-2 text-warning"></i>RentalMarket</a>
+        <div class="brand text-center"><i class="fas fa-shield-alt me-2"></i>Admin Panel</div>
         <ul class="nav flex-column mt-2">
             <li><a class="nav-link <?= ($data['title'] ?? '') == 'Dashboard Admin' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/dashboard"><i class="fas fa-chart-line fa-fw me-2"></i> Dashboard</a></li>
             <li><a class="nav-link <?= in_array($data['title'] ?? '', ['Manajemen Transaksi','Verifikasi Pembayaran']) ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/bookings"><i class="fas fa-receipt fa-fw me-2"></i> Transaksi</a></li>
-            <li><a class="nav-link <?= ($data['title'] ?? '') == 'Verifikasi Pembayaran' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/payments"><i class="fas fa-credit-card fa-fw me-2"></i> Pembayaran</a></li>
             <li><a class="nav-link <?= ($data['title'] ?? '') == 'Manajemen Pengguna' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/users"><i class="fas fa-users fa-fw me-2"></i> Pengguna</a></li>
             <li><a class="nav-link <?= ($data['title'] ?? '') == 'Manajemen Barang' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/items"><i class="fas fa-boxes fa-fw me-2"></i> Barang</a></li>
             <li><a class="nav-link <?= ($data['title'] ?? '') == 'Manajemen Kategori' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/admin/categories"><i class="fas fa-tags fa-fw me-2"></i> Kategori</a></li>

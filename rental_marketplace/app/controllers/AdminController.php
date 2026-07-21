@@ -60,6 +60,7 @@ class AdminController extends Controller {
         $adminModel = $this->model('AdminModel');
         $data['title'] = 'Manajemen Barang';
         $data['items'] = $adminModel->getAllItems($_GET['q'] ?? '');
+        $data['categories'] = $adminModel->getCategories();
         $this->view('admin/items', $data);
     }
     public function update_item_status($id) {

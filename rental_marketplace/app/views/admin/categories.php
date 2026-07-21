@@ -22,12 +22,6 @@
                             <td><code><?= htmlspecialchars($cat['icon'] ?? 'fas fa-tag'); ?></code></td>
                             <td><?= htmlspecialchars($cat['slug']); ?></td>
                             <td class="text-end">
-                                <form method="POST" action="<?= BASEURL; ?>/admin/edit_category/<?= $cat['id']; ?>" class="d-inline">
-                                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-                                    <input type="hidden" name="name" value="<?= htmlspecialchars($cat['name']); ?>">
-                                    <input type="hidden" name="icon" value="<?= htmlspecialchars($cat['icon'] ?? 'fas fa-tag'); ?>">
-                                    <button class="btn btn-sm btn-outline-primary" onclick="this.form.submit()"><i class="fas fa-edit"></i></button>
-                                </form>
                                 <form method="POST" action="<?= BASEURL; ?>/admin/delete_category/<?= $cat['id']; ?>" class="d-inline" onsubmit="return confirm('Hapus kategori ini?')">
                                     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
                                     <button class="btn btn-sm btn-outline-danger" <?= $cat['id']<=3?'disabled':''; ?>><i class="fas fa-trash"></i></button>

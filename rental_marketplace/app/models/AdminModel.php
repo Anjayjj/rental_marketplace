@@ -75,7 +75,26 @@ class AdminModel {
         $this->db->query("UPDATE bookings SET status = :status WHERE id = :id");
         $this->db->bind('status', $status);
         $this->db->bind('id', $id);
-        return $this->db->execute();
+        $res = $this->db->execute();
+        if ($res) {
+            $booking = $this->db->query("SELECT item_id FROM bookings WHERE id = :id")->bind(':id',$id)->single();
+            if ($booking && !empty($booking['item_id'])) {
+                $item_id = (int)$booking['item_id'];
+                $new_item_status = 'active';
+                if (in_array($status, ['approved','active'], true)) {
+                    $new_item_status = 'rented';
+                } elseif (in_array($status, ['rejected','cancelled'], true)) {
+                    $new_item_status = 'active';
+                } elseif ($status === 'completed') {
+                    $new_item_status = 'active';
+                }
+                $this->db->query("UPDATE items SET status = :status WHERE id = :id");
+                $this->db->bind('status', $new_item_status);
+                $this->db->bind('id', $item_id);
+                $this->db->execute();
+            }
+        }
+        return $res;
     }
 
     // --- Review ---
